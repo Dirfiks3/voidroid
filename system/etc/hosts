@@ -1,0 +1,13 @@
+127.0.0.1 localhost
+::1 ip6-localhost
+0.0.0.0 app-measurement.com
+0.0.0.0 ://crashlytics.com
+0.0.0.0 google-analytics.com
+0.0.0.0 ://google-analytics.com
+0.0.0.0 doubleclick.net
+0.0.0.0 stats.g.doubleclick.net
+0.0.0.0 startup.mobile.yandex.net
+0.0.0.0 appmetrica.yandex.ru
+0.0.0.0 ://facebook.com
+0.0.0.0 ://adjust.com
+0.0.0.0 ://appsflyer.com

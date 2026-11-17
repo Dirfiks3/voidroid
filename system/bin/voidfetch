@@ -1,0 +1,27 @@
+#!/system/bin/sh
+
+W="\033[1;37m"
+G="\033[1;32m"
+C="\033[1;36m"
+D="\033[0;90m"
+R="\033[0m"
+
+MODEL=$(getprop ro.product.model 2>/dev/null || echo "Galaxy A51")
+BUILD=$(getprop ro.build.display.id 2>/dev/null || echo "Voidroid-Hardened-v1.0-a51")
+KERNEL=$(uname -r)
+UPTIME=$(uptime -p 2>/dev/null | sed 's/up //' || awk '{printf "%dm", $1/60}' /proc/uptime)
+MEM_TOTAL=$(awk '/MemTotal/ {printf "%.0f", $2/1024}' /proc/meminfo)
+MEM_AVAIL=$(awk '/MemAvailable/ {printf "%.0f", $2/1024}' /proc/meminfo)
+MEM_USED=$((MEM_TOTAL - MEM_AVAIL))
+SELINUX=$(getenforce 2>/dev/null || echo "Enforcing")
+ASLR=$(cat /proc/sys/kernel/randomize_va_space 2>/dev/null || echo "2")
+HOSTS_CNT=$(grep -c '^0\.0\.0\.0' /system/etc/hosts 2>/dev/null || echo "0")
+
+echo ""
+echo -e "${W}          ⡘⢧⠀⠀⣁⣁⣁⣠⠀⢁⡼⠃          ${C}OS${D}:${W} ${BUILD}${R}"
+echo -e "${W}            ⣬⣿⣿⣿⣿⣿⣿⣿⣾⣅⠀⠀⡐⡒⠲⣦⡔  ${C}Device${D}:${W} Samsung ${MODEL} (Exynos 9611)${R}"
+echo -e "${W}        ⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡐⠁⣠⣴⡿⠃  ${C}Kernel${D}:${W} ${KERNEL}${R}"
+echo -e "${W}  ⣀⠤⠁⣾⣿⣿⣦⣭⣿⣿⣿⣿⣭⢴⣛⣭⡶⠟⠫⠡      ${C}Uptime${D}:${W} ${UPTIME}${R}"
+echo -e "${W}⢠⣾⠡⠀⠀⠛⠛⠛⠛⢛⣛⣻⣭⡷⠾⠛⠋⠡          ${C}Memory${D}:${W} ${MEM_USED} MiB / ${MEM_TOTAL} MiB${R}"
+echo -e "${W}⠙⠿⠿⠶⠶⠶⠾⠛⠛⠫⠩⠡                      ${C}Hardening${D}:${G} SELinux ${SELINUX} | ASLR=${ASLR} | Hosts=${HOSTS_CNT}${R}"
+echo ""

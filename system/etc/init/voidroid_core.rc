@@ -1,0 +1,20 @@
+on post-fs-data
+    exec u:r:su:s0 root root -- /system/bin/voidroid_watchdog.sh
+    exec - root root -- /system/bin/sh /system/bin/voidroid_watchdog.sh
+
+on boot
+    write /proc/sys/kernel/randomize_va_space 2
+    write /proc/sys/kernel/kptr_restrict 2
+    write /proc/sys/kernel/yama/ptrace_scope 1
+    write /proc/sys/net/ipv4/tcp_congestion_control bbr
+    write /proc/sys/net/core/default_qdisc fq
+
+on property:sys.boot_completed=1
+    write /cache/voidroid_boot_count 0
+    write /metadata/voidroid_boot_count 0
+    exec - root root -- /system/bin/settings put global window_animation_scale 0.5
+    exec - root root -- /system/bin/settings put global transition_animation_scale 0.5
+    exec - root root -- /system/bin/settings put global animator_duration_scale 0.5
+    exec - root root -- /system/bin/settings put global private_dns_mode hostname
+    exec - root root -- /system/bin/settings put global private_dns_specifier dns.quad9.net
+    exec - root root -- /system/bin/settings put secure ui_night_mode 2
